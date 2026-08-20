@@ -2401,12 +2401,12 @@ function armDanger(ctx){
   // ref/sha can't inject markup, and #dangerTypeName is recreated every time so
   // it's always present.
   const typeLabel=$("#dangerTypeLabel");
-  typeLabel.textContent="Type the "+(ctx.typeNoun||"branch name")+" ";
-  const tn=document.createElement("b"); tn.className="mono"; tn.id="dangerTypeName"; tn.textContent=ctx.name;
-  typeLabel.appendChild(tn);
-  typeLabel.appendChild(document.createTextNode(" to "+(ctx.typeVerb||"arm the rewrite")+":"));
-  const inp=$("#confirmInput"); inp.placeholder=ctx.name; inp.value="";
-  $("#dangerGo").textContent=ctx.confirmLabel||"Confirm"; $("#dangerGo").disabled=true;
+  // Use t() key with placeholders for proper locale translation
+   const noun = ctx.typeNoun ? t(ctx.typeNoun) : t("sidebar.branch_name");
+    const verb = ctx.typeVerb ? t(ctx.typeVerb) : t("sidebar.arm_rewrite");
+
+    typeLabel.textContent = t("filterrepo.danger_type_label", { noun, verb });
+    $("#dangerGo").textContent = ctx.confirmLabel ? t(ctx.confirmLabel) : t("common.confirm");
   openScrim("#dangerScrim"); setTimeout(()=>inp.focus(),30);
 }
 function disarmDanger(){ closeScrim("#dangerScrim"); const ci=$("#confirmInput"); if(ci) ci.value=""; const gg=$("#dangerGo"); if(gg) gg.disabled=true; dangerCtx=null; }
